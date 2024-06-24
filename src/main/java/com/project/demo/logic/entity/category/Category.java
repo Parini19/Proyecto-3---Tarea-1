@@ -1,7 +1,10 @@
 package com.project.demo.logic.entity.category;
 
 
+import com.project.demo.logic.entity.product.Product;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Table(name = "category")
 @Entity
@@ -12,6 +15,10 @@ public class Category {
     private String name;
     private String description;
 
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products;
+
+    public Category() {}
 
     public Long getId() {
         return id;
@@ -35,5 +42,13 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

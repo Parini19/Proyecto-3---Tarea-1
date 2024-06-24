@@ -1,5 +1,6 @@
 package com.project.demo.logic.entity.product;
 
+import com.project.demo.logic.entity.category.Category;
 import jakarta.persistence.*;
 
 @Table(name = "product")
@@ -14,7 +15,9 @@ public class Product {
     private int price;
     private int stock;
 
-    //Categoria, debe estar relacionado a categoria donde solo puede tener una categoria por producto.
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Product() {}
 
@@ -56,5 +59,13 @@ public class Product {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
