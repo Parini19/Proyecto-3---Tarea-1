@@ -1,5 +1,6 @@
 package com.project.demo.logic.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.category.Category;
 import jakarta.persistence.*;
 
@@ -17,6 +18,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonManagedReference
     private Category category;
 
     public Product() {}

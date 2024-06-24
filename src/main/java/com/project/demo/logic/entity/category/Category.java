@@ -1,6 +1,7 @@
 package com.project.demo.logic.entity.category;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.product.Product;
 import jakarta.persistence.*;
 
@@ -16,6 +17,7 @@ public class Category {
     private String description;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private Set<Product> products;
 
     public Category() {}
