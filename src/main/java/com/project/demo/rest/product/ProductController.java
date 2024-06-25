@@ -9,8 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/products")
@@ -30,50 +28,24 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public Product createProduct(@RequestBody Map<String, Object> productData) {
-        Product product = new Product();
-        product.setName((String) productData.get("name"));
-        product.setDescription((String) productData.get("description"));
-        product.setPrice((Integer) productData.get("price"));
-        product.setStock((Integer) productData.get("stock"));
-
-        Long categoryId = Long.valueOf((Integer) productData.get("categoryId"));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
-        product.setCategory(category);
-
+    public Product createProduct(@RequestBody Product product) {
         return productRepository.save(product);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Map<String, Object> productData) {
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
         return productRepository.findById(id)
                 .map(existingProduct -> {
-                    existingProduct.setName((String) productData.get("name"));
-                    existingProduct.setDescription((String) productData.get("description"));
-                    existingProduct.setPrice((Integer) productData.get("price"));
-                    existingProduct.setStock((Integer) productData.get("stock"));
-
-                    Long categoryId = Long.valueOf((Integer) productData.get("categoryId"));
-                    Category category = categoryRepository.findById(categoryId)
-                            .orElseThrow(() -> new RuntimeException("Category not found"));
-                    existingProduct.setCategory(category);
-
+                    existingProduct.setName(product.getName());
+                    existingProduct.setDescription(product.getDescription());
+                    existingProduct.setPrice(product.getPrice());
+                    existingProduct.setStock(product.getStock());
+                    existingProduct.setCategory(product.getCategory());
                     return productRepository.save(existingProduct);
                 })
                 .orElseGet(() -> {
-                    Product product = new Product();
                     product.setId(id);
-                    product.setName((String) productData.get("name"));
-                    product.setDescription((String) productData.get("description"));
-                    product.setPrice((Integer) productData.get("price"));
-                    product.setStock((Integer) productData.get("stock"));
-
-                    Long categoryId = Long.valueOf((Integer) productData.get("categoryId"));
-                    Category category = categoryRepository.findById(categoryId)
-                            .orElseThrow(() -> new RuntimeException("Category not found"));
-                    product.setCategory(category);
-
                     return productRepository.save(product);
                 });
     }
