@@ -1,8 +1,8 @@
 package com.project.demo.rest.product;
 
-import com.project.demo.logic.entity.category.Category;
-import com.project.demo.logic.entity.category.CategoryRepository;
+
 import com.project.demo.logic.entity.product.Product;
+import com.project.demo.logic.entity.product.ProductDTO;
 import com.project.demo.logic.entity.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,13 +17,11 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','SUPER_ADMIN')")
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAllProductsWithCategory();
     }
 
     @PostMapping
